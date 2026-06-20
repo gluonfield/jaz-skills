@@ -1,0 +1,35 @@
+{
+  "version": "2026.06.20",
+  "skills": [
+    {
+      "name": "create-animated-video",
+      "version": "2026.06.20",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/create-animated-video.zip",
+      "sha256": "595a5d66ae7ddd780e3e413415c0cad0099bf61640826be41e2db3b3700fd54a"
+    },
+    {
+      "name": "jazmem",
+      "version": "2026.06.20",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/jazmem.zip",
+      "sha256": "8d47c8f40e1ba95af214fd80b8be50c9e1768062c9d7df81f478387f48081e30"
+    },
+    {
+      "name": "make-interfaces-feel-better",
+      "version": "2026.06.20",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/make-interfaces-feel-better.zip",
+      "sha256": "88122661a191f4077a9201d691ecfd108a889bfb01c3e41cce0307921c04bb0a"
+    },
+    {
+      "name": "thermo-nuclear-code-quality-review",
+      "version": "2026.06.20",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/thermo-nuclear-code-quality-review.zip",
+      "sha256": "633f364d8eef8df604a551785e9b7f790b9c1128d1b16065624c7ba7b5da4485"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "version": "2026.06.20",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/web-artifacts-builder.zip",
+      "sha256": "3a34863571ab4f78be5febee2aa374ab9f45f5f5b93cef482faef63f66b70bb6"
+    }
+  ]
+}
