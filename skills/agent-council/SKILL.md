@@ -26,7 +26,7 @@ Current preferences:
 
 ## Run
 
-1. Spawn 3-5 agents with stable slugs; use 2 if availability is limited.
+1. Reuse existing council agents with relevant context when possible; otherwise spawn 3-5 agents with stable slugs, or 2 if availability is limited.
 2. Send each agent the same independent task.
 3. Compare agreements, disagreements, unique evidence, assumptions, and gaps.
 4. If disagreement, missing evidence, or high stakes justify it, send a second loop: give each agent the useful insights from the other agents and ask it to revise or defend its view.
