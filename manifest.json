@@ -1,34 +1,40 @@
 {
-  "version": "2026.06.20",
+  "version": "jaz-v0.0.93",
   "skills": [
+    {
+      "name": "agent-council",
+      "version": "2026.07.07",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/agent-council.zip",
+      "sha256": "cf52131acfea793a52c429b6d3f76c88060caceebe1c1b549995b918c82ed7ff"
+    },
     {
       "name": "create-animated-video",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/create-animated-video.zip",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/create-animated-video.zip",
       "sha256": "595a5d66ae7ddd780e3e413415c0cad0099bf61640826be41e2db3b3700fd54a"
     },
     {
       "name": "jazmem",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/jazmem.zip",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/jazmem.zip",
       "sha256": "8d47c8f40e1ba95af214fd80b8be50c9e1768062c9d7df81f478387f48081e30"
     },
     {
       "name": "make-interfaces-feel-better",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/make-interfaces-feel-better.zip",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/make-interfaces-feel-better.zip",
       "sha256": "88122661a191f4077a9201d691ecfd108a889bfb01c3e41cce0307921c04bb0a"
     },
     {
       "name": "thermo-nuclear-code-quality-review",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/thermo-nuclear-code-quality-review.zip",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/thermo-nuclear-code-quality-review.zip",
       "sha256": "633f364d8eef8df604a551785e9b7f790b9c1128d1b16065624c7ba7b5da4485"
     },
     {
       "name": "web-artifacts-builder",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/v2026.06.20/web-artifacts-builder.zip",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.93/web-artifacts-builder.zip",
       "sha256": "3a34863571ab4f78be5febee2aa374ab9f45f5f5b93cef482faef63f66b70bb6"
     }
   ]
