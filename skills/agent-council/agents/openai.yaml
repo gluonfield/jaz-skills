@@ -1,7 +1,7 @@
 interface:
   display_name: "Agent Council"
   short_description: "Run multiple agents, compare, and synthesize"
-  default_prompt: "Use $agent-council to investigate this decision with independent agents and synthesize the result."
+  default_prompt: "Investigate this decision with an independent agent council and synthesize the result."
 
 policy:
   allow_implicit_invocation: true

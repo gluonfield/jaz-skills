@@ -9,7 +9,7 @@ Use this skill to turn one user task into an independent council of child agents
 
 ## When To Run
 
-Run a council when the user explicitly asks for `$agent-council`, an "agent council", "multiple agents", "different models", or a deep investigation where independent judgment is valuable.
+Run a council when the user explicitly asks for an "agent council", "multiple agents", "different models", or a deep investigation where independent judgment is valuable.
 
 For ordinary factual answers, small edits, or tasks where spawning agents would add latency without improving the result, answer directly and mention that a council is unnecessary.
 
