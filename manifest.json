@@ -1,41 +1,47 @@
 {
-  "version": "jaz-v0.0.96",
+  "version": "jaz-v0.0.97",
   "skills": [
     {
       "name": "agent-council",
       "version": "2026.07.08",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/agent-council.zip",
-      "sha256": "9584c624d088f3ef4f60b72ae9ba07214d48b8e828da836362a3a75edb36aad4"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/agent-council.zip",
+      "sha256": "d4a182d3e3ea75bcb8a7ead70582ac5017205559f0da215b3d1a124abb5fd453"
     },
     {
       "name": "create-animated-video",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/create-animated-video.zip",
-      "sha256": "a8d8eeec5948615b5d4e2127403d26074de6f48875b81840ab37f52fafd378c6"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/create-animated-video.zip",
+      "sha256": "a1a0f60529f3983f64ec238a8e2eeafbe72c369f3482b040b3bb6b935fca62a7"
     },
     {
       "name": "jazmem",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/jazmem.zip",
-      "sha256": "4d7a81d78d0505ec3d51ad567f6b94b1959c712c551cfda297ac629884ea6e25"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/jazmem.zip",
+      "sha256": "2ff6039e75cb0b355cf32ab25d548774c69cc0f5e31fce5fffdcdac8c5455a61"
     },
     {
       "name": "make-interfaces-feel-better",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/make-interfaces-feel-better.zip",
-      "sha256": "f25db3197408957a69550084e81ccb7fddbf4a8501166e22970bab588ef87d7f"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/make-interfaces-feel-better.zip",
+      "sha256": "650e22c9e7a75a30c34f211990ff413d42d96ebef4209e5e3652991ef334803d"
+    },
+    {
+      "name": "nlm",
+      "version": "2026.07.12",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/nlm.zip",
+      "sha256": "74b5194621f3862cf1f3010d8ce728cd28b66c7b483eca0d255b3e83c7dd014b"
     },
     {
       "name": "thermo-nuclear-code-quality-review",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/thermo-nuclear-code-quality-review.zip",
-      "sha256": "90024de378c6a928e06021692b5225403f0685bfee6b6481114b923c4a68bcfe"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/thermo-nuclear-code-quality-review.zip",
+      "sha256": "23c6aa27d4a147b7fa3a5dfc9884abfe2d651b8dd4303c4eaf8e19cad17d7fc4"
     },
     {
       "name": "web-artifacts-builder",
       "version": "2026.06.20",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.96/web-artifacts-builder.zip",
-      "sha256": "311f1cf852787ec51c19ed9c2d96f3a74df3523cf03186963fd7be828abdb3d0"
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.97/web-artifacts-builder.zip",
+      "sha256": "5da663d42bfb79375785a19cf202200034eba4ad3d966cfe399568b19d61e5d4"
     }
   ]
 }
