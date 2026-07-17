@@ -1,6 +1,6 @@
 ---
 name: agent-council
-description: Run an agent council for high-stakes decisions, deep research, architecture/codebase investigations, reviews, or explicit requests for multiple agents, different models, critique rounds, disagreement analysis, or synthesis across spawned agents.
+description: Run an external multi-model ACP council only when the user explicitly asks to launch a council, multiple external ACP sessions, or independent answers from named external models. Do not trigger for ordinary reviews, research, discussion of agent behavior, or generic subagent requests.
 ---
 
 # Agent Council
@@ -9,7 +9,7 @@ Use multiple agents to reach the maximum-coverage answer: more evidence, more fa
 
 ## Roster
 
-Spawn child agents to get independent, high-quality answers. Each harness/model has different training data, tools, failure modes, and taste, so they may see the problem differently.
+Create external ACP sessions to get independent, high-quality answers. Each harness/model has different training data, tools, failure modes, and taste, so they may see the problem differently.
 
 - Prefer distinct harnesses and distinct base models.
 - Do not run the same base model twice through different harnesses unless the user asks for a harness comparison.
@@ -26,42 +26,42 @@ Current preferences:
 
 ## Tool Calls
 
-When Jaztools exposes agent tools, use explicit calls like:
+When Jaztools exposes external ACP session tools, use explicit calls like:
 
 ```text
-agent_list({})
-agent_spawn({"acp_agent":"codex","slug":"gluon-mass-codex","reasoning_effort":"xhigh"})
-agent_spawn({"acp_agent":"claude","slug":"gluon-mass-claude","reasoning_effort":"xhigh"})
-agent_spawn({"acp_agent":"opencode","model":"z-ai/glm-5.2","slug":"gluon-mass-glm"})
-agent_send({"session":"gluon-mass-codex","message":"{TASK}","wait":false})
-agent_send({"session":"gluon-mass-claude","message":"{TASK}","wait":false})
-agent_send({"session":"gluon-mass-glm","message":"{TASK}","wait":false})
-agent_wait({"session":"gluon-mass-codex"})
-agent_wait({"session":"gluon-mass-claude"})
-agent_wait({"session":"gluon-mass-glm"})
+acp_session_list({})
+acp_session_create({"acp_agent":"codex","slug":"gluon-mass-codex","reasoning_effort":"xhigh"})
+acp_session_create({"acp_agent":"claude","slug":"gluon-mass-claude","reasoning_effort":"xhigh"})
+acp_session_create({"acp_agent":"opencode","model":"z-ai/glm-5.2","slug":"gluon-mass-glm"})
+acp_session_send({"session":"gluon-mass-codex","message":"{TASK}","wait":false})
+acp_session_send({"session":"gluon-mass-claude","message":"{TASK}","wait":false})
+acp_session_send({"session":"gluon-mass-glm","message":"{TASK}","wait":false})
+acp_session_wait({"session":"gluon-mass-codex"})
+acp_session_wait({"session":"gluon-mass-claude"})
+acp_session_wait({"session":"gluon-mass-glm"})
 ```
 
-Use task-specific slugs, not generic names. Agents report when done; wait for them. `agent_wait` only limits how long the main agent waits for a snapshot; it does not cancel work. Do not set `timeout_seconds` for long research. If one looks stuck, check:
+Use task-specific slugs, not generic names. External sessions report when done; wait for them. `acp_session_wait` only limits how long the main agent waits for a snapshot; it does not cancel work. Do not set `timeout_seconds` for long research. If one looks stuck, check:
 
 ```text
-agent_status({"session":"gluon-mass-codex"})
+acp_session_status({"session":"gluon-mass-codex"})
 ```
 
 Agents are multi-turn. Use follow-ups to resolve gaps or factual disagreement:
 
 ```text
-agent_send({"session":"gluon-mass-codex","message":"Verify this factual disagreement with evidence: ...","wait":false})
+acp_session_send({"session":"gluon-mass-codex","message":"Verify this factual disagreement with evidence: ...","wait":false})
 ```
 
 ## Run
 
-1. Reuse existing council agents with relevant context when possible; otherwise spawn 3-5 agents with stable slugs, or 2 if availability is limited.
+1. Reuse existing external council sessions with relevant context when possible; otherwise create 3-5 sessions with stable slugs, or 2 if availability is limited.
 2. Send each agent the same independent task.
 3. Build a synthesis map, not a transcript: key claims, supporting evidence, contradictions, assumptions, gaps, and which agent exposed each item.
 4. Use agents to fill gaps. If evidence is missing, reasoning is weak, or agents disagree, send targeted follow-ups that ask the best-positioned agent to verify, calculate, inspect code, or defend a specific claim.
 5. Synthesize one combined answer. Do not majority-vote and do not force convergence; combine coverage and preserve useful minority views.
 
-Tell child agents to:
+Tell external reviewers to:
 
 - Answer the original task completely.
 - Use source/code evidence where relevant.
@@ -83,6 +83,6 @@ Iterate actively: send corrections, ask follow-up questions, challenge weak clai
 
 ## Guardrails
 
-- Do not let child agents edit the same files. Use disjoint scopes or worktrees.
+- Do not let external sessions edit the same files. Use disjoint scopes or worktrees.
 - Mention failed or unavailable agents only when coverage is affected.
 - Final answer should lead with the integrated synthesis and actionable conclusion. Add only a short council note if useful: roster, live disagreements, confidence, next check.
