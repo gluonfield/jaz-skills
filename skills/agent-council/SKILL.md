@@ -1,6 +1,6 @@
 ---
 name: agent-council
-description: Run an external multi-model ACP council only when the user explicitly asks to launch a council, multiple external ACP sessions, or independent answers from named external models. Do not trigger for ordinary reviews, research, discussion of agent behavior, or generic subagent requests.
+description: Run an external multi-model Jaz agent council only when the user explicitly asks to launch a council, multiple Jaz agent sessions, or independent answers from named external models. Do not trigger for ordinary reviews, research, discussion of agent behavior, or generic subagent requests.
 ---
 
 # Agent Council
@@ -9,7 +9,7 @@ Use multiple agents to reach the maximum-coverage answer: more evidence, more fa
 
 ## Roster
 
-Create external ACP sessions to get independent, high-quality answers. Each harness/model has different training data, tools, failure modes, and taste, so they may see the problem differently.
+Create external Jaz agent sessions to get independent, high-quality answers. Each harness/model has different training data, tools, failure modes, and taste, so they may see the problem differently.
 
 - Prefer distinct harnesses and distinct base models.
 - Do not run the same base model twice through different harnesses unless the user asks for a harness comparison.
@@ -26,31 +26,31 @@ Current preferences:
 
 ## Tool Calls
 
-When Jaztools exposes external ACP session tools, use explicit calls like:
+When Jaztools exposes Jaz agent tools, use explicit calls like:
 
 ```text
-acp_session_list({})
-acp_session_create({"acp_agent":"codex","slug":"gluon-mass-codex","reasoning_effort":"xhigh"})
-acp_session_create({"acp_agent":"claude","slug":"gluon-mass-claude","reasoning_effort":"xhigh"})
-acp_session_create({"acp_agent":"opencode","model":"z-ai/glm-5.2","slug":"gluon-mass-glm"})
-acp_session_send({"session":"gluon-mass-codex","message":"{TASK}","wait":false})
-acp_session_send({"session":"gluon-mass-claude","message":"{TASK}","wait":false})
-acp_session_send({"session":"gluon-mass-glm","message":"{TASK}","wait":false})
-acp_session_wait({"session":"gluon-mass-codex"})
-acp_session_wait({"session":"gluon-mass-claude"})
-acp_session_wait({"session":"gluon-mass-glm"})
+jazagent_list({})
+jazagent_spawn({"acp_agent":"codex","slug":"gluon-mass-codex","reasoning_effort":"xhigh"})
+jazagent_spawn({"acp_agent":"claude","slug":"gluon-mass-claude","reasoning_effort":"xhigh"})
+jazagent_spawn({"acp_agent":"opencode","model":"z-ai/glm-5.2","slug":"gluon-mass-glm"})
+jazagent_send({"session":"gluon-mass-codex","message":"{TASK}","wait":false})
+jazagent_send({"session":"gluon-mass-claude","message":"{TASK}","wait":false})
+jazagent_send({"session":"gluon-mass-glm","message":"{TASK}","wait":false})
+jazagent_wait({"session":"gluon-mass-codex"})
+jazagent_wait({"session":"gluon-mass-claude"})
+jazagent_wait({"session":"gluon-mass-glm"})
 ```
 
-Use task-specific slugs, not generic names. External sessions report when done; wait for them. `acp_session_wait` only limits how long the main agent waits for a snapshot; it does not cancel work. Do not set `timeout_seconds` for long research. If one looks stuck, check:
+Use task-specific slugs, not generic names. External sessions report when done; wait for them. `jazagent_wait` only limits how long the main agent waits for a snapshot; it does not cancel work. Do not set `timeout_seconds` for long research. If one looks stuck, check:
 
 ```text
-acp_session_status({"session":"gluon-mass-codex"})
+jazagent_status({"session":"gluon-mass-codex"})
 ```
 
 Agents are multi-turn. Use follow-ups to resolve gaps or factual disagreement:
 
 ```text
-acp_session_send({"session":"gluon-mass-codex","message":"Verify this factual disagreement with evidence: ...","wait":false})
+jazagent_send({"session":"gluon-mass-codex","message":"Verify this factual disagreement with evidence: ...","wait":false})
 ```
 
 ## Run
