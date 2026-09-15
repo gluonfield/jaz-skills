@@ -74,7 +74,7 @@ jazmem "what connects Alice and Riley"
 jazmem search --deep "..."                 # escalation: wider pool + two-hop links
 ```
 
-`ask` answers a question; raw search finds pages. Use raw when picking pages to read or edit; use `ask` when answering the user. (`jazmem --agentic` is the JSON form of ask.)
+Use `memory_search` or raw CLI search to retrieve evidence, then interpret and cite it yourself. Neither calls an LLM or needs a provider key. `jazmem ask` is a separate optional CLI synthesis command; it is unnecessary inside an agent conversation. (`jazmem --agentic` is the JSON form of ask.)
 
 Raw results carry `modified_at` (staleness) and, only when it matters, `via`: `relationship` = typed-edge match, `link` = neighbor pulled in by expansion (not a direct match). The slug prefix is the lane — canonical lanes are curated, `inbox/`/`sources/` are raw. `--limit` does not affect ask/agentic; `--deep` is the only compute knob — an escalation, not a default.
 
@@ -84,7 +84,7 @@ Raw results carry `modified_at` (staleness) and, only when it matters, `via`: `r
 2. Try name variants; try the relational forms.
 3. `jazmem search --deep --limit 20 "<query>"`.
 4. `jazmem get --raw <slug>` the closest hit; follow its wikilinks, `links`, and `backlinks`.
-5. Only then say memory is missing. If a legitimate variant failed, add it as an alias and reindex.
+5. Only then say memory is missing. If a legitimate variant failed, add it as an alias; Jaz indexes the edit automatically.
 
 ## Read and Write
 
@@ -111,12 +111,12 @@ Details: [references/writing-memory.md](references/writing-memory.md). Commands/
 
 Served to Jaz agents through Jaztools at `http://127.0.0.1:5299/mcp/jaztools`. Read-only — writes happen by editing markdown.
 
-- `memory_search`: delegated memory-search answer with references, checked pages, search notes, and meaningful gaps; `deep: true` when thin.
+- `memory_search`: direct ranked page snippets with paths, scores, matching chunks and modification dates. Interpret and cite the evidence yourself. `limit` defaults to 10, maximum 50; use `deep: true` for wider retrieval and linked-page expansion when results are thin.
 - `memory_get_page`: raw markdown as text content, with structured metadata, links/backlinks, and near-miss suggestions.
 
 ## Maintenance
 
-Maintenance commands exist for explicit jazmem-internals work only. They are not normal agent responsibilities; the jazmem scheduler runs indexing, six-hour dream consolidation, and hygiene automatically inside Jaz.
+Maintenance commands exist for explicit jazmem-internals work only. They are not normal agent responsibilities; the jazmem scheduler runs indexing, scheduled dream consolidation, and hygiene automatically inside Jaz.
 
 ## Anti-Patterns
 

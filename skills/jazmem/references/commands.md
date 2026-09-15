@@ -136,7 +136,7 @@ Rules:
 - With `--deep`, `rounds` can be 2 and `diagnostics` gains `followup_queries` and `followup_chunks`.
 - `citations[].id` matches the [n] markers in the answer text; `jazmem ask` renders them as a Sources legend.
 - Raw search remains deterministic and does not call an LLM.
-- Use agentic mode when answering the user directly; use raw search when selecting pages to read or edit.
+- Inside an agent conversation, retrieve with raw search and interpret the evidence yourself. Agentic mode is an optional standalone CLI answer command.
 
 Provider env:
 
@@ -225,7 +225,7 @@ MCP client config:
 
 Jaztools MCP tools for Jaz agents:
 
-- `memory_search`: input `{ "query": "...", "deep": true }` (`deep` optional); output is the delegated search worker's final text, usually containing an answer, references, checked pages, search notes, and meaningful gaps. It uses the configured Jaz memory-search ACP agent rather than direct jazmem provider keys.
+- `memory_search`: input `{ "query": "...", "limit": 10, "deep": true }` (`limit` and `deep` optional; maximum limit 50). Returns `results` containing `slug`, `title`, `score`, `modified_at`, `matches` (chunk, score, snippet) and optional `via`, plus `stats` and `warnings`. This is direct retrieval without an LLM, worker session or provider key; interpret and cite the evidence yourself.
 - `memory_get_page`: input `{ "path": "people/alice" }`; primary text content is raw markdown. Structured output is metadata such as `{ "found": true, "path": "...", "type": "...", "aliases": [...], "modified_at": "...", "links": [...], "backlinks": [...] }` or `{ "found": false, "error": "not found: people/alice", "suggestions": [...] }`.
 
 Standalone `jazmem-server` tools may differ from Jaztools and can require the provider-key-backed agentic mode described above.
