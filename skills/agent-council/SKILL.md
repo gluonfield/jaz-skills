@@ -1,88 +1,75 @@
 ---
 name: agent-council
-description: Run an external multi-model Jaz agent council only when the user explicitly asks to launch a council, multiple Jaz agent sessions, or independent answers from named external models. Do not trigger for ordinary reviews, research, discussion of agent behavior, or generic subagent requests.
+description: Run a council of independent Jaz agent threads on different models (Codex, Claude, Grok) to widen the search before committing to an answer or a plan. Use it for open-ended or exploratory work where more ideas and caught blind spots matter, such as "how could X be improved", architecture and product decisions, and ambiguous, high-stakes problems. Use it also when your own context is long and a fresh, independent view is worth the cost, and whenever the user asks for a council or for answers from several models. Skip it for narrow edits, factual lookups and tasks with one obvious answer.
 ---
 
 # Agent Council
 
-Use multiple agents to reach the maximum-coverage answer: more evidence, more failure modes, more counterarguments. Skip small factual answers, narrow edits, or work where extra agents add latency without insight.
+A council gives a problem to several strong agents that start with fresh context and come from different model families. Each brings different training, tools, failure modes and taste. Use them to maximise the surface area of ideas and to catch what you would miss, then choose. They are worth most before committing to an implementation, when the task is open-ended, and when your own context is long enough that your judgement may be dulled.
+
+Each seat is a full agent run at high effort, so a council costs real time and money. Convene one when better coverage can change the outcome; skip it when one careful pass would do.
 
 ## Roster
 
-Create external Jaz agent sessions to get independent, high-quality answers. Each harness/model has different training data, tools, failure modes, and taste, so they may see the problem differently.
+Check the current models first with `list_agent_options({})` and prefer each family's newest flagship. As of 2026-10-18:
 
-- Prefer distinct harnesses and distinct base models.
-- Do not run the same base model twice through different harnesses unless the user asks for a harness comparison.
-- Use OpenCode only when fewer than 3 other harnesses are available for the task, or when the user explicitly asks for OpenCode; use multiple OpenCode seats only on request.
-- If only one harness works, say the council degraded to a single-agent run and do a strong self-critique pass.
+- Codex: `gpt-6-sol`, `xhigh`.
+- Claude: `fable[1m]` (Fable 5.1), `xhigh`; otherwise `opus[1m]` (Opus 5.5), `xhigh`.
+- Grok: `grok-4.7`, `xhigh`.
+- Optional fourth base model through Codex and OpenRouter: agent `codex`, modelProvider `openrouter`, model `google/gemini-4-argon`, thinking `high`. OpenRouter bills per token, so seat it only when coverage matters more than cost.
 
-Current preferences:
+Prefer distinct base models, and seats from families other than your own; you already bring your own view. Do not seat the same base model twice. If only one other model is available, say the council degraded and critique your own answer hard.
 
-- Codex: `gpt-5.5`, `xhigh`.
-- Claude: `fable` if available, otherwise `opus-4.8`, `xhigh`.
-- Antigravity: `Gemini 3.5 Flash (High)`.
-- Grok: `grok-composer-2.5-fast`.
-- OpenCode: `z-ai/glm-5.2`.
+## Tool calls
 
-## Tool Calls
-
-When Jaztools exposes Jaz agent tools, use explicit calls like:
+Council seats are saved Jaz threads:
 
 ```text
-jazagent_list({})
-jazagent_spawn({"acp_agent":"codex","slug":"gluon-mass-codex","reasoning_effort":"xhigh"})
-jazagent_spawn({"acp_agent":"claude","slug":"gluon-mass-claude","reasoning_effort":"xhigh"})
-jazagent_spawn({"acp_agent":"opencode","model":"z-ai/glm-5.2","slug":"gluon-mass-glm"})
-jazagent_send({"session":"gluon-mass-codex","message":"{TASK}","wait":false})
-jazagent_send({"session":"gluon-mass-claude","message":"{TASK}","wait":false})
-jazagent_send({"session":"gluon-mass-glm","message":"{TASK}","wait":false})
-jazagent_wait({"session":"gluon-mass-codex"})
-jazagent_wait({"session":"gluon-mass-claude"})
-jazagent_wait({"session":"gluon-mass-glm"})
+list_agent_options({})
+create_thread({"agent":"codex","model":"gpt-6-sol","thinking":"xhigh","slug":"bot-memory-sol","title":"Bot memory: Sol","prompt":"{TASK}"})
+create_thread({"agent":"claude","model":"fable[1m]","thinking":"xhigh","slug":"bot-memory-fable","title":"Bot memory: Fable","prompt":"{TASK}"})
+create_thread({"agent":"grok","model":"grok-4.7","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
+wait_threads({"targets":[{"threadId":"bot-memory-sol"},{"threadId":"bot-memory-fable"},{"threadId":"bot-memory-grok"}]})
+read_thread({"threadId":"bot-memory-sol"})
+send_message_to_thread({"threadId":"bot-memory-sol","prompt":"Verify this disagreement with evidence: ..."})
 ```
 
-Use task-specific slugs, not generic names. External sessions report when done; wait for them. `jazagent_wait` only limits how long the main agent waits for a snapshot; it does not cancel work. Do not set `timeout_seconds` for long research. If one looks stuck, check:
-
-```text
-jazagent_status({"session":"gluon-mass-codex"})
-```
-
-Agents are multi-turn. Use follow-ups to resolve gaps or factual disagreement:
-
-```text
-jazagent_send({"session":"gluon-mass-codex","message":"Verify this factual disagreement with evidence: ...","wait":false})
-```
+- Use task-specific slugs.
+- A thread does not see your conversation, so put the goal, inputs, file paths and what to report back into its prompt.
+- `wait_threads` returns as soon as any target finishes or needs input, and waits at most 50 seconds per call; call it again for the rest. A thread you created also reports back to you when it finishes, so you can end your turn instead of polling.
+- `send_message_to_thread` works only on an idle thread. Use `stop_thread` for a seat that is stuck or no longer needed.
+- Seats that edit code need `"worktree": true` and disjoint scopes.
 
 ## Run
 
-1. Reuse existing external council sessions with relevant context when possible; otherwise create 3-5 sessions with stable slugs, or 2 if availability is limited.
-2. Send each agent the same independent task.
-3. Build a synthesis map, not a transcript: key claims, supporting evidence, contradictions, assumptions, gaps, and which agent exposed each item.
-4. Use agents to fill gaps. If evidence is missing, reasoning is weak, or agents disagree, send targeted follow-ups that ask the best-positioned agent to verify, calculate, inspect code, or defend a specific claim.
-5. Synthesize one combined answer. Do not majority-vote and do not force convergence; combine coverage and preserve useful minority views.
+1. Reuse existing council threads that already hold relevant context; otherwise create 3 seats, or 2 when availability is limited.
+2. Send each seat the same independent task. Do your own analysis while they work.
+3. Build a synthesis map, not a transcript: key claims, supporting evidence, contradictions, assumptions, gaps, and which seat exposed each item.
+4. Fill gaps. When evidence is missing, reasoning is weak or seats disagree, send targeted follow-ups that ask the best-placed seat to verify, calculate, inspect code or defend a specific claim.
+5. Synthesise one combined answer. Do not majority-vote or force convergence; combine coverage and keep useful minority views.
 
-Tell external reviewers to:
+Tell seats to:
 
 - Answer the original task completely.
-- Use source/code evidence where relevant.
-- Create intermediate files, scripts, calculations, or probes when useful for answering the question.
+- Use source and code evidence where relevant.
+- Create intermediate files, scripts, calculations or probes when they help answer the question.
 - State assumptions, confidence, risks, and what would change the conclusion.
-- In critique pass: adopt strong peer points, reject weak ones with reasons, and keep plausible minority views.
+- In a critique pass, adopt strong peer points, reject weak ones with reasons, and keep plausible minority views.
 
-Iterate actively: send corrections, ask follow-up questions, challenge weak claims, and push agents when they miss evidence or say something incorrect. The goal is the strongest final answer, not a polite transcript of first drafts.
+Iterate actively: send corrections, ask follow-up questions, challenge weak claims, and push seats that miss evidence or get something wrong. The goal is the strongest final answer, not a polite transcript of first drafts.
 
-## Synthesis Discipline
+## Synthesis discipline
 
-- Treat child agents as reasoning probes, not panelists to quote.
-- Merge overlapping points, delete duplicated reports, and make the final answer read as one coherent view.
-- Use each agent's unique contribution to repair blind spots: missing sources, alternate mechanisms, code paths, risks, counterexamples, implementation details, or tests.
-- When agents disagree factually, share exact evidence between them and investigate; the dissenting agent may be right and the main agent may be wrong.
-- Use later turns to improve coverage and correctness, not to push agents toward the answer you expected.
-- If disagreement remains unresolved, state the live crux and why it matters.
-- Do not present sections like "Codex said / Claude said / Grok said" unless the user explicitly asks for individual reports or the disagreement itself is the deliverable.
+- Treat seats as reasoning probes, not panelists to quote.
+- Merge overlapping points, drop duplicates, and make the final answer read as one coherent view.
+- Use each seat's unique contribution to repair blind spots: missing sources, alternative mechanisms, code paths, risks, counterexamples, implementation details or tests.
+- When seats disagree on facts, share the exact evidence and investigate; the dissenting seat may be right and you may be wrong.
+- Use later turns to improve coverage and correctness, not to steer seats toward the answer you expected.
+- If a disagreement stays unresolved, state the live crux and why it matters.
+- Do not write "Codex said / Claude said / Grok said" sections unless the user asks for individual reports or the disagreement itself is the deliverable.
 
 ## Guardrails
 
-- Do not let external sessions edit the same files. Use disjoint scopes or worktrees.
-- Mention failed or unavailable agents only when coverage is affected.
-- Final answer should lead with the integrated synthesis and actionable conclusion. Add only a short council note if useful: roster, live disagreements, confidence, next check.
+- Never let two seats edit the same files.
+- Mention failed or unavailable seats only when coverage suffers.
+- Lead the final answer with the integrated synthesis and an actionable conclusion. Add a short council note only when useful: roster, live disagreements, confidence, next check.
