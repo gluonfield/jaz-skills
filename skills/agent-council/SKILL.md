@@ -11,9 +11,9 @@ Each seat is a full agent run at high effort, so a council costs real time and m
 
 ## Roster
 
-Check the current models first with `list_agent_options({})` and prefer each family's newest flagship; the Claude seat is always Opus 5.5. As of 2026-10-19:
+Check availability with `list_agent_options({})`. Use GPT-6.1 Sol for the Codex seat and Opus 5.5 for the Claude seat; if either is unavailable, report the missing seat. As of 2026-10-19:
 
-- Codex: `gpt-6-sol`, `xhigh`.
+- Codex: `gpt-6.1-sol`, `xhigh`. Use another OpenAI model only when the user explicitly requests it.
 - Claude: `opus[1m]` (Opus 5.5), `xhigh`. Never seat Fable or another Claude model; if Opus 5.5 is unavailable, report the missing seat.
 - Grok: the newest Grok model `list_agent_options` offers (`grok-4.7` on 2026-10-19), `xhigh`.
 - Optional fourth base model through Codex and OpenRouter: agent `codex`, modelProvider `openrouter`, model `google/gemini-4-argon`, thinking `high`. OpenRouter bills per token, so seat it only when coverage matters more than cost.
@@ -26,7 +26,7 @@ Council seats are saved Jaz threads:
 
 ```text
 list_agent_options({})
-create_thread({"agent":"codex","model":"gpt-6-sol","thinking":"xhigh","slug":"bot-memory-sol","title":"Bot memory: Sol","prompt":"{TASK}"})
+create_thread({"agent":"codex","model":"gpt-6.1-sol","thinking":"xhigh","slug":"bot-memory-sol","title":"Bot memory: Sol","prompt":"{TASK}"})
 create_thread({"agent":"claude","model":"opus[1m]","thinking":"xhigh","slug":"bot-memory-opus","title":"Bot memory: Opus","prompt":"{TASK}"})
 create_thread({"agent":"grok","model":"grok-4.7","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
 wait_threads({"targets":[{"threadId":"bot-memory-sol"},{"threadId":"bot-memory-opus"},{"threadId":"bot-memory-grok"}]})
@@ -42,7 +42,7 @@ send_message_to_thread({"threadId":"bot-memory-sol","prompt":"Verify this disagr
 
 ## Run
 
-1. Reuse existing council threads that already hold relevant context; otherwise create 3 seats, or 2 when availability is limited.
+1. Reuse existing council threads that already hold relevant context and use the roster models; otherwise create 3 seats, or 2 when availability is limited.
 2. Send each seat the same independent task. Do your own analysis while they work.
 3. Build a synthesis map, not a transcript: key claims, supporting evidence, contradictions, assumptions, gaps, and which seat exposed each item.
 4. Fill gaps. When evidence is missing, reasoning is weak or seats disagree, send targeted follow-ups that ask the best-placed seat to verify, calculate, inspect code or defend a specific claim.
