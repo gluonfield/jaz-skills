@@ -11,11 +11,11 @@ Each seat is a full agent run at high effort, so a council costs real time and m
 
 ## Roster
 
-Check the current models first with `list_agent_options({})` and prefer each family's newest flagship. As of 2026-10-18:
+Check the current models first with `list_agent_options({})` and prefer each family's newest flagship; the Claude seat is always Opus 5.5. As of 2026-10-19:
 
 - Codex: `gpt-6-sol`, `xhigh`.
-- Claude: `fable[1m]` (Fable 5.1), `xhigh`; otherwise `opus[1m]` (Opus 5.5), `xhigh`.
-- Grok: the newest Grok model `list_agent_options` offers (`grok-4.6` on 2026-10-18), `xhigh`.
+- Claude: `opus[1m]` (Opus 5.5), `xhigh`. Never seat Fable or another Claude model; if Opus 5.5 is unavailable, report the missing seat.
+- Grok: the newest Grok model `list_agent_options` offers (`grok-4.7` on 2026-10-19), `xhigh`.
 - Optional fourth base model through Codex and OpenRouter: agent `codex`, modelProvider `openrouter`, model `google/gemini-4-argon`, thinking `high`. OpenRouter bills per token, so seat it only when coverage matters more than cost.
 
 Prefer distinct base models, and seats from families other than your own; you already bring your own view. Do not seat the same base model twice. If only one other model is available, say the council degraded and critique your own answer hard.
@@ -27,9 +27,9 @@ Council seats are saved Jaz threads:
 ```text
 list_agent_options({})
 create_thread({"agent":"codex","model":"gpt-6-sol","thinking":"xhigh","slug":"bot-memory-sol","title":"Bot memory: Sol","prompt":"{TASK}"})
-create_thread({"agent":"claude","model":"fable[1m]","thinking":"xhigh","slug":"bot-memory-fable","title":"Bot memory: Fable","prompt":"{TASK}"})
-create_thread({"agent":"grok","model":"grok-4.6","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
-wait_threads({"targets":[{"threadId":"bot-memory-sol"},{"threadId":"bot-memory-fable"},{"threadId":"bot-memory-grok"}]})
+create_thread({"agent":"claude","model":"opus[1m]","thinking":"xhigh","slug":"bot-memory-opus","title":"Bot memory: Opus","prompt":"{TASK}"})
+create_thread({"agent":"grok","model":"grok-4.7","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
+wait_threads({"targets":[{"threadId":"bot-memory-sol"},{"threadId":"bot-memory-opus"},{"threadId":"bot-memory-grok"}]})
 read_thread({"threadId":"bot-memory-sol"})
 send_message_to_thread({"threadId":"bot-memory-sol","prompt":"Verify this disagreement with evidence: ..."})
 ```

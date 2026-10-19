@@ -1,11 +1,11 @@
 {
-  "version": "jaz-v0.0.102",
+  "version": "jaz-v0.0.103",
   "skills": [
     {
       "name": "agent-council",
-      "version": "2026.10.18.2",
-      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.102/agent-council.zip",
-      "sha256": "0a98b590b6ed4a17adbd0c0c69c7bae132a0fda3e958b904654c96b524310137"
+      "version": "2026.10.19.1",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.103/agent-council.zip",
+      "sha256": "c81113ac214b129a04769b27db7fdb876567c88db2b0646f6517dd2cc21d1bdd"
     },
     {
       "name": "create-animated-video",
