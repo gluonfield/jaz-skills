@@ -11,12 +11,10 @@ Each seat is a full agent run at high effort, so a council costs real time and m
 
 ## Roster
 
-Check availability with `list_agent_options({})`. Use GPT-6.1 Sol for the Codex seat and Opus 5.5 for the Claude seat; if either is unavailable, report the missing seat. As of 2026-10-19:
+Seat the latest flagship model each agent offers: check `list_agent_options({})`, pick the newest model in each family, and run it at `xhigh`. When the user's standing instructions name a model for a family, use that one. If a family has no seat available, report it.
 
-- Codex: `gpt-6.1-sol`, `xhigh`. Use another OpenAI model only when the user explicitly requests it.
-- Claude: `opus[1m]` (Opus 5.5), `xhigh`. Never seat Fable or another Claude model; if Opus 5.5 is unavailable, report the missing seat.
-- Grok: the newest Grok model `list_agent_options` offers (`grok-4.7` on 2026-10-19), `xhigh`.
-- Optional fourth base model through Codex and OpenRouter: agent `codex`, modelProvider `openrouter`, model `google/gemini-4-argon`, thinking `high`. OpenRouter bills per token, so seat it only when coverage matters more than cost.
+- Default seats: Codex, Claude and Grok.
+- Optional fourth base model: the latest Gemini through agent `codex` with modelProvider `openrouter`, thinking `high`. OpenRouter bills per token, so seat it only when coverage matters more than cost.
 
 Prefer distinct base models, and seats from families other than your own; you already bring your own view. Do not seat the same base model twice. If only one other model is available, say the council degraded and critique your own answer hard.
 
@@ -26,12 +24,12 @@ Council seats are saved Jaz threads:
 
 ```text
 list_agent_options({})
-create_thread({"agent":"codex","model":"gpt-6.1-sol","thinking":"xhigh","slug":"bot-memory-sol","title":"Bot memory: Sol","prompt":"{TASK}"})
-create_thread({"agent":"claude","model":"opus[1m]","thinking":"xhigh","slug":"bot-memory-opus","title":"Bot memory: Opus","prompt":"{TASK}"})
-create_thread({"agent":"grok","model":"grok-4.7","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
-wait_threads({"targets":[{"threadId":"bot-memory-sol"},{"threadId":"bot-memory-opus"},{"threadId":"bot-memory-grok"}]})
-read_thread({"threadId":"bot-memory-sol"})
-send_message_to_thread({"threadId":"bot-memory-sol","prompt":"Verify this disagreement with evidence: ..."})
+create_thread({"agent":"codex","model":"{LATEST_CODEX_MODEL}","thinking":"xhigh","slug":"bot-memory-codex","title":"Bot memory: Codex","prompt":"{TASK}"})
+create_thread({"agent":"claude","model":"{LATEST_CLAUDE_MODEL}","thinking":"xhigh","slug":"bot-memory-claude","title":"Bot memory: Claude","prompt":"{TASK}"})
+create_thread({"agent":"grok","model":"{LATEST_GROK_MODEL}","thinking":"xhigh","slug":"bot-memory-grok","title":"Bot memory: Grok","prompt":"{TASK}"})
+wait_threads({"targets":[{"threadId":"bot-memory-codex"},{"threadId":"bot-memory-claude"},{"threadId":"bot-memory-grok"}]})
+read_thread({"threadId":"bot-memory-codex"})
+send_message_to_thread({"threadId":"bot-memory-codex","prompt":"Verify this disagreement with evidence: ..."})
 ```
 
 - Use task-specific slugs.
