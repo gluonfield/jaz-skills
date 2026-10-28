@@ -1,5 +1,5 @@
 {
-  "version": "jaz-v0.0.103",
+  "version": "jaz-v0.0.104",
   "skills": [
     {
       "name": "agent-council",
@@ -24,6 +24,12 @@
       "version": "2026.06.20",
       "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.98/make-interfaces-feel-better.zip",
       "sha256": "650e22c9e7a75a30c34f211990ff413d42d96ebef4209e5e3652991ef334803d"
+    },
+    {
+      "name": "research",
+      "version": "2026.10.28",
+      "archive_url": "https://github.com/gluonfield/jaz-skills/releases/download/jaz-v0.0.104/research.zip",
+      "sha256": "947d9adf855d571ac99a44f5b3425976ab3dcede69fdc96191a9f4aae454e2d6"
     },
     {
       "name": "thermo-nuclear-code-quality-review",
